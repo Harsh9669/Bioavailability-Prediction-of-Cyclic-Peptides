@@ -67,8 +67,8 @@ def calculate_overall_stability(gastric_stability, intestinal_stability):
         return 0  
 
 # Streamlit UI
-st.title('BIOAVALABILITY PREDICTOR')
-st.subheader('Predict the expected bioavailability of cyclic peptides using SMILES string')
+st.title('ORAL BIOAVALABILITY PREDICTOR')
+st.subheader('Predict the expected oral bioavailability of cyclic peptides using SMILES string')
 
 # Input SMILES string
 smiles_input = st.text_input('Enter a SMILES string:', '')
