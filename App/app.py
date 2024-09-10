@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pickle
 
-# Load your trained models and scaler
+# Loading trained models and scaler
 with open('App/permeability_model.pkl', 'rb') as f:
     permeability_model = pickle.load(f)
 
@@ -56,15 +56,15 @@ def stability_mapping(value):
 # Function to calculate overall stability
 def calculate_overall_stability(gastric_stability, intestinal_stability):
     if gastric_stability == 2 and intestinal_stability == 2:
-        return 1  # Stable in both
+        return 1 
     elif (gastric_stability == 1 and intestinal_stability >= 1) or (gastric_stability == 2 and intestinal_stability == 1):
-        return 0.8  # Partially stable in one and partially stable/stable in the other
+        return 0.8  
     elif (gastric_stability == 2 and intestinal_stability == 0) or (gastric_stability == 0 and intestinal_stability == 2):
-        return 0.6  # Stable in one and unstable in the other
+        return 0.6  
     elif (gastric_stability == 1 and intestinal_stability == 0) or (gastric_stability == 0 and intestinal_stability == 1):
-        return 0.4  # Partially stable in one and unstable in the other
+        return 0.4  
     else:
-        return 0  # Unstable in both
+        return 0  
 
 # Streamlit UI
 st.title('Molecular Property Prediction')
@@ -91,7 +91,6 @@ if smiles_input:
         
         # Predict permeability
         permeability = permeability_model.predict(descriptors_scaled)[0]
-        # Round permeability to 2 decimal places and format with "LogP"
         permeability_rounded = round(float(permeability), 2)
         st.write(f"Predicted Permeability (LogP): {permeability_rounded}")
         
@@ -113,7 +112,6 @@ if smiles_input:
         
         # Predict bioavailability
         bioavailability = bioavailability_model.predict([bioavailability_input])[0]
-        # Round bioavailability to 2 decimal places and append percentage symbol
         bioavailability_rounded = round(float(bioavailability), 2)
         st.subheader("Predicted Bioavailability:")
         st.info(f"{bioavailability_rounded} %")
@@ -121,7 +119,7 @@ if smiles_input:
     except Exception as e:
         st.error(f"Error processing SMILES: {e}")
 
-# Add Contact Us section
+# Contact Us section
 st.sidebar.subheader("Contact Us")
 st.sidebar.write("For any inquiries, please contact us at:")
 st.sidebar.write("[hj728490@gmail.com](mailto:hj728490@gmail.com)")
