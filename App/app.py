@@ -6,19 +6,19 @@ import pandas as pd
 import pickle
 
 # Load your trained models and scaler
-with open('App/permeability_model.pkl', 'rb') as f:
+with open('permeability_model.pkl', 'rb') as f:
     permeability_model = pickle.load(f)
 
-with open('App/gastric_stability_model.pkl', 'rb') as f:
+with open('gastric_stability_model.pkl', 'rb') as f:
     gastric_stability_model = pickle.load(f)
 
-with open('App/intestinal_stability_model.pkl', 'rb') as f:
+with open('intestinal_stability_model.pkl', 'rb') as f:
     intestinal_stability_model = pickle.load(f)
 
-with open('App/bioavailability_model.pkl', 'rb') as f:
+with open('bioavailability_model.pkl', 'rb') as f:
     bioavailability_model = pickle.load(f)
 
-with open('App/scaler.pkl', 'rb') as f:
+with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
 # Function to calculate RDKit descriptors
@@ -91,7 +91,9 @@ if smiles_input:
         
         # Predict permeability
         permeability = permeability_model.predict(descriptors_scaled)[0]
-        st.write(f"Predicted Permeability: {permeability}")
+        # Round permeability to 2 decimal places and format with "LogP"
+        permeability_rounded = round(float(permeability), 2)
+        st.write(f"Predicted Permeability (LogP): {permeability_rounded}")
         
         # Predict gastric stability
         gastric_stability = gastric_stability_model.predict(descriptors_scaled)[0]
@@ -111,8 +113,10 @@ if smiles_input:
         
         # Predict bioavailability
         bioavailability = bioavailability_model.predict([bioavailability_input])[0]
+        # Round bioavailability to 2 decimal places and append percentage symbol
+        bioavailability_rounded = round(float(bioavailability), 2)
         st.subheader("Predicted Bioavailability:")
-        st.info(f"{bioavailability}")
+        st.info(f"{bioavailability_rounded} %")
 
     except Exception as e:
         st.error(f"Error processing SMILES: {e}")
