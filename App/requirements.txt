@@ -1,0 +1,7 @@
+rdkit-pypi
+scikit-learn
+pandas
+pybind11>=2.12
+streamlit
+xgboost
+numpy<2
