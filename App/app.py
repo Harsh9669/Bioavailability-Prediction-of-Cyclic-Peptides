@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 
 # Load your trained models and scalers
-with open('App/bioavailability_model.pkl', 'rb') as f:
+with open('App/permeability_model.pkl', 'rb') as f:
     permeability_model = pickle.load(f)
 
 with open('App/gastric_stability_model.pkl', 'rb') as f:
