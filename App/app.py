@@ -88,12 +88,15 @@ if smiles_input:
         # Calculate descriptors
         descriptors = calculate_descriptors(smiles_input)
         
+        # Initialize flag to track if any scaler is out of range
+        out_of_range_flag = False
+        
         # Scaling for permeability model
         descriptors_scaled_permeability = scaler_permeability.transform([descriptors])
         
         # Check if descriptors are out of range for the permeability scaler
         if check_out_of_range(scaler_permeability, descriptors):
-            st.warning("Some descriptor values are out of range for the permeability model. The results may not be accurate.")
+            out_of_range_flag = True
         
         permeability = permeability_model.predict(descriptors_scaled_permeability)[0]
         permeability_rounded = round(float(permeability), 2)
@@ -104,7 +107,7 @@ if smiles_input:
         
         # Check if descriptors are out of range for the stability scalers
         if check_out_of_range(scaler_stability, descriptors):
-            st.warning("Some descriptor values are out of range for the stability models. The results may not be accurate.")
+            out_of_range_flag = True
         
         gastric_stability = gastric_stability_model.predict(descriptors_scaled_stability)[0]
         gastric_stability_mapped = stability_mapping(gastric_stability)
@@ -123,7 +126,11 @@ if smiles_input:
         
         # Check if bioavailability inputs are out of range
         if check_out_of_range(scaler_bioavailability, bioavailability_input):
-            st.warning("Some descriptor values are out of range for the bioavailability model. The results may not be accurate.")
+            out_of_range_flag = True
+        
+        # If any scaler had out-of-range values, show a single warning
+        if out_of_range_flag:
+            st.warning("Some descriptor values are out of range for the models. The results may not be accurate.")
         
         # Predict bioavailability
         bioavailability = bioavailability_model.predict(bioavailability_input_scaled)[0]
