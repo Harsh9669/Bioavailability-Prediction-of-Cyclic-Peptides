@@ -6,25 +6,25 @@ import pandas as pd
 import pickle
 
 # Load your trained models and scalers
-with open('permeability_model.pkl', 'rb') as f:
+with open('App/bioavailability_model.pkl', 'rb') as f:
     permeability_model = pickle.load(f)
 
-with open('gastric_stability_model.pkl', 'rb') as f:
+with open('App/gastric_stability_model.pkl', 'rb') as f:
     gastric_stability_model = pickle.load(f)
 
-with open('intestinal_stability_model.pkl', 'rb') as f:
+with open('App/intestinal_stability_model.pkl', 'rb') as f:
     intestinal_stability_model = pickle.load(f)
 
-with open('bioavailability_model.pkl', 'rb') as f:
+with open('App/bioavailability_model.pkl', 'rb') as f:
     bioavailability_model = pickle.load(f)
 
-with open('scaler.pkl', 'rb') as f:
+with open('App/scaler.pkl', 'rb') as f:
     scaler_permeability = pickle.load(f)
 
-with open('scaler2.pkl', 'rb') as f:
+with open('App/scaler2.pkl', 'rb') as f:
     scaler_stability = pickle.load(f)
 
-with open('scaler3.pkl', 'rb') as f:
+with open('App/scaler3.pkl', 'rb') as f:
     scaler_bioavailability = pickle.load(f)
 
 # Function to calculate RDKit descriptors
