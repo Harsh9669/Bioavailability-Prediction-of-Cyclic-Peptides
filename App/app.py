@@ -71,6 +71,12 @@ def calculate_overall_stability(gastric_stability, intestinal_stability):
     else:
         return 0  # Unstable in both
 
+# Function to check if values are out of range of the scaler
+def check_out_of_range(scaler, data):
+    min_vals = scaler.data_min_
+    max_vals = scaler.data_max_
+    return np.any(data < min_vals) or np.any(data > max_vals)
+
 # Streamlit UI
 st.title('BIOAVAILABILITY PREDICTOR')
 st.subheader('Predict the expected bioavailability of cyclic peptides using SMILES string')
@@ -84,12 +90,22 @@ if smiles_input:
         
         # Scaling for permeability model
         descriptors_scaled_permeability = scaler_permeability.transform([descriptors])
+        
+        # Check if descriptors are out of range for the permeability scaler
+        if check_out_of_range(scaler_permeability, descriptors):
+            st.warning("Some descriptor values are out of range for the permeability model. The results may not be accurate.")
+        
         permeability = permeability_model.predict(descriptors_scaled_permeability)[0]
         permeability_rounded = round(float(permeability), 2)
         st.write(f"Predicted Permeability (LogP): {permeability_rounded}")
         
         # Scaling for stability models
         descriptors_scaled_stability = scaler_stability.transform([descriptors])
+        
+        # Check if descriptors are out of range for the stability scalers
+        if check_out_of_range(scaler_stability, descriptors):
+            st.warning("Some descriptor values are out of range for the stability models. The results may not be accurate.")
+        
         gastric_stability = gastric_stability_model.predict(descriptors_scaled_stability)[0]
         gastric_stability_mapped = stability_mapping(gastric_stability)
         st.write(f"Predicted Gastric Stability: {gastric_stability_mapped}")
@@ -104,6 +120,10 @@ if smiles_input:
         # Scaling for bioavailability model
         bioavailability_input = np.append(descriptors, [permeability, overall_stability])
         bioavailability_input_scaled = scaler_bioavailability.transform([bioavailability_input])
+        
+        # Check if bioavailability inputs are out of range
+        if check_out_of_range(scaler_bioavailability, bioavailability_input):
+            st.warning("Some descriptor values are out of range for the bioavailability model. The results may not be accurate.")
         
         # Predict bioavailability
         bioavailability = bioavailability_model.predict(bioavailability_input_scaled)[0]
