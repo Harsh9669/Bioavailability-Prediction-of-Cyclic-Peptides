@@ -145,4 +145,4 @@ if smiles_input:
 st.sidebar.subheader("Contact Us")
 st.sidebar.write("For any inquiries, please contact us at:")
 st.sidebar.write("[hj728490@gmail.com](mailto:hj728490@gmail.com)")
-st.sidebar.write("SAMPLE SMILES: CCC1C(=O)N(CC(=O)N")
+st.sidebar.write("SAMPLE SMILES: COc1cc(C=O)ccc1O")
